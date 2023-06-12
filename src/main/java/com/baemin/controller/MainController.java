@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MainController {
 	
+	// 메인 페이지 이동
 	@GetMapping("/")
 	public String test() {
 		System.out.println("test");
 		return "home";
 	}
 	
+	// 메인 페이지 주소입력란
 	@ResponseBody
 	@PostMapping("/addressModify")
 	public void addressModify(String address1, String address2, 
