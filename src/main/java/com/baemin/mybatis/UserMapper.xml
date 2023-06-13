@@ -14,38 +14,14 @@
 		where ${valueType} = #{value}
 	</select>
 	
-	<!--  
 	<select id="login" resultType="User">
-		select u.id, u.username, u.password, u.email, u.nickname, u.phone, u.role, p.point 
-		from bm_user u
-		left join
-				(
-					select user_id, sum(point) user_point from bm_point
-					group by user_id
-				) p
-		on
-			u.id = p.user_id
-		where u.username = #{username}
+	    SELECT U.ID, U.USERNAME, U.PASSWORD, U.EMAIL, U.NICKNAME, U.PHONE, U.RATING, U.ROLE, P.POINT
+	    FROM 
+	        BM_USER U 
+	    LEFT JOIN 
+	        (SELECT USER_ID, SUM(POINT) POINT FROM BM_POINT GROUP BY USER_ID) P
+	    ON 
+	        U.ID = P.USER_ID
+	    WHERE U.USERNAME = #{username }    
 	</select>
-	-->
-	
-<select id="login" resultType="User">
-SELECT
-U.ID
-,U.USERNAME
-,U.PASSWORD
-,U.EMAIL
-,U.NICKNAME
-,U.PHONE
-,U.RATING
-,U.ROLE
-,P.POINT
-FROM
-BM_USER U
-LEFT JOIN
-(SELECT USER_ID, SUM(POINT) POINT FROM BM_POINT GROUP BY USER_ID) P
-ON
-U.ID = P.USER_ID
-WHERE U.USERNAME = #{username }
-</select>
 </mapper>
