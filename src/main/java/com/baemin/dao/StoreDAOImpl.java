@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.baemin.dto.Food;
+import com.baemin.dto.FoodOption;
 import com.baemin.dto.Store;
 import com.baemin.store.StoreDetail;
 
@@ -26,6 +28,18 @@ public class StoreDAOImpl implements StoreDAO {
 	public Store storeDetail(long storeId) {
 		// TODO Auto-generated method stub
 		return sql.selectOne("store.storeDetail", storeId);
+	}
+	
+	@Override
+	public List<Food> foodList(long id) {
+		// TODO Auto-generated method stub
+		return sql.selectList("store.foodList", id);
+	}
+	
+	@Override
+	public List<FoodOption> foodOption(int foodId) {
+		// TODO Auto-generated method stub
+		return sql.selectList("store.foodOption", foodId);
 	}
 
 }

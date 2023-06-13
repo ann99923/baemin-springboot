@@ -7,5 +7,6 @@
         <div>전화번호</div>
         <div>이메일</div>
     </div>
+    <script src="/js/util/util.js"></script>
 </footer>
 

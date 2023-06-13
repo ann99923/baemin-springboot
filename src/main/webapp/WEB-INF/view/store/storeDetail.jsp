@@ -99,9 +99,33 @@
 			
 		<!-- 메뉴 탭 -->	
         <ul class="menu">
-        
-        
-        
+        <c:forEach items="${store.foodList }" var="foodList" >
+	            <li>
+		            <c:if test="${adminPage && SPRING_SECURITY_CONTEXT.authentication.principal.user.role == 'ROLE_ADMIN' }">
+		                <label class="menu_delete_label">
+		                	<i class="fas fa-check-square" ></i>
+		                	<input type="checkbox" class="menu_delete_checkbox" name="deleteNumber" value="${foodList.id }">
+	                	</label>
+	                </c:if>
+	                
+	                <div class="menu_box">
+	                    <div>
+							<h2>${foodList.foodName } </h2>
+		                    
+   		                    <fm:formatNumber value="${foodList.foodPrice }" pattern="###,###" />원 
+		                    <input type="hidden" value="${foodList.storeId }" name="storeId" >
+				            <input type="hidden" value="${foodList.id }" name="foodId" class="food_id"   >
+				            <input type="hidden" value="${foodList.foodName }" name="foodName" class="food_name" >
+				            <input type="hidden" value="${foodList.foodPrice }" name="foodPrice" class="food_price"   >
+				            <input type="hidden" value="${foodList.foodDec }" name="foodDec" class="food_dec"   >
+				            <input type="hidden" value="${foodList.foodImg }" name="foodImg" class="food_img"   >
+				            <input type="hidden" value="${foodList.foodThumb }" name="foodThumb" class="food_thumb"   >
+		                </div>
+		                
+                    	<div><img src="${foodList.foodImg }" alt="이미지"></div>
+                    </div>
+	             </li>
+	        </c:forEach>
         </ul>
 		<!-- 메뉴 탭 -->	
 		

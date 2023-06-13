@@ -2,6 +2,7 @@ package com.baemin.store;
 
 import java.util.List;
 
+import com.baemin.dto.Food;
 import com.baemin.dto.Store;
 
 import lombok.AllArgsConstructor;
@@ -18,8 +19,8 @@ import lombok.ToString;
 public class StoreDetail {
 	
 	private Store storeInfo;
+	private List<Food> foodList;
 	
-//	private List<Food> foodList;
 //	private List<Review> reviewList;
 
 }
