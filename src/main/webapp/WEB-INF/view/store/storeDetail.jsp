@@ -227,7 +227,8 @@
 	<input type="hidden" value="${info.closingTime }" id="store_closing_time"> 
 	
 	<input type="hidden" value="${BMaddress.address2 }" id="delevery_address">
-	
+
+<!--  
 		<script>
     $(document).ready(function(){
     	
@@ -325,7 +326,7 @@
         })
 	</script>
 
-
+-->
 	
 
 

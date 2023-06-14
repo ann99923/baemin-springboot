@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<insert id="pointUpdate">
+		insert into bm_point(user_id, info, point)
+		values(#{userId}, #{info}, #{point})
+	</insert>
+</mapper>

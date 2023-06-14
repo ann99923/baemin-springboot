@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,9 @@ public class UserController {
 	
 	// 로그인 페이지 이동
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpServletRequest request, HttpSession session) {
+		String referer = (String) request.getHeader("referer");
+		session.setAttribute("referer", referer);
 		return "user/login";
 	}
 	

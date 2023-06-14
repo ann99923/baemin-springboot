@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order">
+ 
+ 
+	<select id="getDeleveryTip" resultType="int">
+		SELECT DELEVERY_TIP FROM BM_STORE WHERE ID = #{storeId }
+	</select>
+ 
+ 
+ 
+	<select id="foodPriceList" resultType="int">
+		<foreach collection="list" item="item"  separator="union all" >
+			select sum(food_price) sum from bm_food where id = #{item.foodId}
+		</foreach>
+	</select>
+	
+	
+	<select id="optionPriceList" resultType="int">
+		
+		<foreach collection="list" item="item"  separator="union all" >
+			<if test="item.optionId == null">
+				select 0 from dual 
+			</if>
+			
+			<if test="item.optionId != null">
+				select sum(option_price) sum from bm_food_option where id in
+				<foreach collection="item.optionId" item="i" open="(" close=")" separator="," >
+					#{i}
+				</foreach>
+			</if>			
+		</foreach>
+		
+	</select>
+	
+	<insert id="order">
+		<if test="userId == 0">
+			insert into bm_order_non_user(order_num, store_id, user_id, pay_method, phone, delevery_address1, delevery_address2, delevery_address3, total_price, used_point, request)
+			values(${orderNum}, #{storeId}, #{userId}, #{payMethod}, #{phone}, #{deleveryAddress1}, #{deleveryAddress2}, #{deleveryAddress3}, #{totalPrice}, #{usedPoint}, #{request})
+		</if>
+		
+		<if test="userId != 0">
+			insert into bm_order_user(order_num, store_id, user_id, pay_method, phone, delevery_address1, delevery_address2, delevery_address3, total_price, used_point, request)
+			values(${orderNum}, #{storeId}, #{userId}, #{payMethod}, #{phone}, #{deleveryAddress1}, #{deleveryAddress2}, #{deleveryAddress3}, #{totalPrice}, #{usedPoint}, #{request})
+		</if>
+	</insert>
+	
+	<insert id="orderDetail">
+		insert all
+		<foreach collection="detail" item="detail">
+			<if test="userId == 0">
+				into bm_order_detail_non_user(
+			</if>
+			<if test="userId != 0">
+				into bm_order_detail_user(
+			</if>
+			order_num, food_info)
+		values(#{detail.orderNum}, #{detail.foodInfoJSON})
+		</foreach>
+		select * from dual
+	</insert>
+	
+	<select id="orderList" resultType="OrderList">
+		select * from
+		(
+			select rownum r, O.*
+			from 
+			(
+				select count(*) over() list_count,
+					o.order_num, o.user_id, o.order_date, o.pay_method,
+					o.delevery_status, o.delevery_address1, o.delevery_address2, o.delevery_address3,
+					o.store_id, o.total_price, o.used_point, o.request, 
+					d.food_info,
+					s.store_name, s.store_img, s.store_thumb, s.delevery_tip,
+					r.review_content, r.score, r.review_img
+				from bm_order_user o
+				left join
+				(
+					select order_num, 
+						listagg(food_info, '/') within group
+						(
+							order by order_num
+						)food_info
+					from bm_order_detail_user
+					group by order_num
+				) d
+				on o.order_num = d.order_num
+				left join bm_store s
+				on o.store_id = s.id
+				left join bm_review r
+				on o.order_num = r.order_num
+				where o.user_id = #{userId}
+				order by o.order_date desc
+			) O
+		)
+	</select>
+</mapper>
