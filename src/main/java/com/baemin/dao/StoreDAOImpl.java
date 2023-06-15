@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.baemin.dto.Food;
 import com.baemin.dto.FoodOption;
+import com.baemin.dto.Review;
 import com.baemin.dto.Store;
-import com.baemin.store.StoreDetail;
 
 @Repository
 public class StoreDAOImpl implements StoreDAO {
@@ -40,6 +40,24 @@ public class StoreDAOImpl implements StoreDAO {
 	public List<FoodOption> foodOption(int foodId) {
 		// TODO Auto-generated method stub
 		return sql.selectList("store.foodOption", foodId);
+	}
+	
+	@Override
+	public void reviewWrite(Review review) {
+		// TODO Auto-generated method stub
+		sql.insert("store.reviewWrite", review);
+	}
+	
+	@Override
+	public List<Review> reviewList(long id) {
+		// TODO Auto-generated method stub
+		return sql.selectList("store.reviewList", id);
+	}
+	
+	@Override
+	public void reviewModify(Review review) {
+		// TODO Auto-generated method stub
+		sql.update("store.reviewModify", review);
 	}
 
 }

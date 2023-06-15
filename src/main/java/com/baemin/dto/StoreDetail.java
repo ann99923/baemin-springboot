@@ -1,9 +1,6 @@
-package com.baemin.store;
+package com.baemin.dto;
 
 import java.util.List;
-
-import com.baemin.dto.Food;
-import com.baemin.dto.Store;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +17,6 @@ public class StoreDetail {
 	
 	private Store storeInfo;
 	private List<Food> foodList;
-	
-//	private List<Review> reviewList;
+	private List<Review> reviewList;
 
 }

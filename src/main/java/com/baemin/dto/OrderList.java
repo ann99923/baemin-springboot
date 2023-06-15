@@ -31,5 +31,8 @@ public class OrderList {
 	private String storeThumb;
 	private String deleveryTip;
 	private String reviewContent;
+	
+	private String score;
+	private String reviewImg;
 
 }

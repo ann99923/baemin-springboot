@@ -9,8 +9,39 @@
 	</select>
 
 	<select id="storeDetail" resultType="Store">
-		select * from bm_store
-		where id = #{storeId}
+		select result.*, case when to_char(sysdate, 'HH24') between opening_time and opening_time + bs_time
+							then 'true' else 'false' end is_open
+		from
+		(
+			select s.*, c.*, case when mod(24 - s.opening_time + s.closing_time, 24) != 0
+								then mod(24 - s.opening_time + s.closing_time, 24) else 24 end bs_time
+			from bm_store s,
+			(
+				select * from
+				(
+					select round(avg(score), 1) score, count(review_content) review_content,
+							count(boss_comment) boss_comment_count, count(case when score=1 then 1 end) score1,
+							count(case when score=2 then 1 end) score2, count(case when score=3 then 1 end) score3,
+							count(case when score=4 then 1 end) score4, count(case when score=5 then 1 end) score5
+					from bm_review
+					where store_id=#{id}
+				),
+				(
+					select sum(order_count) order_count
+					from
+					(
+						select count(*) order_count
+						from bm_order_user
+						where store_id=#{id}
+						union all
+						select count(*) order_count
+						from bm_order_non_user
+						where store_id=#{id}
+					)
+				) 
+			) c
+			where id = #{id}
+		) result
 	</select>
 	
 	<select id="foodList" resultType="Food">
@@ -24,4 +55,27 @@
 		from bm_food_option
 		where food_id=#{foodId}
 	</select>
+	
+	<insert id="reviewWrite">
+		insert into bm_review(order_num, store_id, review_content, user_id, score, review_img)
+		values(${orderNum}, #{storeId}, #{reviewContent},#{userId},#{score},#{reviewImg})
+	</insert>
+	
+	<select id="reviewList" resultType="Review">
+		select r.order_num, r.store_id, r.review_content, r.boss_comment,
+				r.regi_date, r.score, r.review_img, r.user_id, u.nickname
+		from bm_review r
+		left join bm_user u
+		on r.user_id = u.id
+		where r.store_id = #{id}
+		order by regi_date DESC
+	</select>
+	
+	<update id="reviewModify">
+		update bm_review set review_content = #{reviewContent}, score=#{score}
+								<if test="reviewImg != null">
+									, review_img=#{reviewImg}
+								</if>
+		where order_num = ${orderNum}
+	</update>
 </mapper>

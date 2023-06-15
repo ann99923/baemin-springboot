@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.baemin.dto.Food;
 import com.baemin.dto.FoodOption;
+import com.baemin.dto.Review;
 import com.baemin.dto.Store;
-import com.baemin.store.StoreDetail;
 
 public interface StoreDAO {
 	
@@ -17,5 +17,11 @@ public interface StoreDAO {
 	List<Food> foodList(long storeId);
 	
 	List<FoodOption> foodOption(int foodId);
+	
+	void reviewWrite(Review review);
+	
+	List<Review> reviewList(long id);
+	
+	void reviewModify(Review review);
 
 }
