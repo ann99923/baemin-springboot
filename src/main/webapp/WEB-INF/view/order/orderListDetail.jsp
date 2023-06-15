@@ -35,7 +35,7 @@
 					<ul>
 						<li>기본가격 <fm:formatNumber value="${cart[i].foodPrice }" />원</li>
  
-						<c:set var="foodTotalPrice" value="${cart[i].foodPrice }" />
+						<c:set var="foodTotalPrice" value="${cart[i].foodPrice * cart[i].amount }" />
 						<c:if test="${fn:length(cart[i].optionName) != 0}">
 							<c:forEach begin="0" end="${fn:length(cart[i].optionName) -1 }" var="j">
 								<li>
