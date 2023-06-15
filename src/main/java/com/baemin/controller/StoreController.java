@@ -19,12 +19,16 @@ import com.baemin.dto.Store;
 import com.baemin.dto.StoreDetail;
 import com.baemin.login.LoginService;
 import com.baemin.service.StoreService;
+import com.baemin.util.UploadFile;
 
 @Controller
 public class StoreController {
 	
 	@Autowired
 	private StoreService storeService;
+	
+	@Autowired
+	private UploadFile uploadFile;
 	
 	@GetMapping("/store/{category}/{address1}")
 	public String store(@PathVariable int category, @PathVariable int address1, Model model) {
@@ -54,10 +58,11 @@ public class StoreController {
 	@PostMapping("/store/review")
 	public String review(Review review, MultipartFile file, @AuthenticationPrincipal LoginService user) throws IOException {
 		if(file.isEmpty()) {
-			String img = "/img/none.gif";
+			String img = "";
 			review.setReviewImg(img);
 		}else {
-			
+			String img = uploadFile.fileUpload(file);
+			review.setReviewImg(img);
 		}
 		
 		long userId = user.getUser().getId();
@@ -72,8 +77,8 @@ public class StoreController {
 	@PostMapping("/store/reviewModify")
 	public String reviewModify(Review review, MultipartFile file, @AuthenticationPrincipal LoginService user) throws IOException {
 		if(!file.isEmpty()) {
-//			String img = uploadFile.fileUpload(file);
-//			review.setReviewImg(img);
+			String img = uploadFile.fileUpload(file);
+			review.setReviewImg(img);
 		}
 		
 		long userId = user.getUser().getId();

@@ -253,10 +253,10 @@ $(document).ready(function() {
 
 	// 리뷰탭 그래프
 	const reviewCount = $(".store_review_count").data("review_count");
-	
+	alert(reviewCount);
 	if(reviewCount != 0) {
 		for(var i=1;i<=5;i++) {
-			const target = $(".graph.score"+i)
+			const target = $(".graph .score"+i)
 			const score = target.data("score"+i) / reviewCount * 100;
 			target.css("background","gold").css("width", score+"%");
 		}

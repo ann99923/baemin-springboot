@@ -4,6 +4,7 @@
 <%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div id="wrap">
 	<nav>
+	${store.storeInfo }
 		<c:set var="info" value="${store.storeInfo }" />
 		<h1 id="store_name" data-store_name="${info.storeName }">${info.storeName }</h1>
 		<div id="is_open" data-is_open="${store.storeInfo.isOpen }"></div>
