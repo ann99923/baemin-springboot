@@ -96,4 +96,30 @@
 			) O
 		)
 	</select>
+	
+	<select id="orderListDetail" resultType="OrderList">
+		select o.order_num, o.user_id, o.order_date, o.pay_method, o.delevery_status,
+				o.phone, o.delevery_address1, o.delevery_address2, o.delevery_address3,
+				o.store_id, o.total_price, o.used_point, o.request,
+				d.food_info,
+				s.store_name, s.delevery_tip
+		from bm_order_user o
+		left join
+		(
+			select order_num,
+					listagg(food_info, '/') within group
+						(
+							order by order_num
+						)food_info
+			from bm_order_detail_user
+			group by order_num
+		) d
+		on o.order_num = d.order_num
+		left join bm_store s
+		on o.store_id = s.id
+		left join bm_review r
+		on o.order_num = r.order_num
+		where o.order_num = #{orderNum}
+		order by o.order_date desc		
+	</select>
 </mapper>

@@ -113,5 +113,11 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return orderDAO.orderList(userId);
 	}
+	
+	@Override
+	public OrderList orderListDetail(String orderNum) {
+		// TODO Auto-generated method stub
+		return orderDAO.orderListDetail(orderNum);
+	}
 
 }

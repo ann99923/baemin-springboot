@@ -58,4 +58,10 @@ public class OrderDAOImpl implements OrderDAO {
 		// TODO Auto-generated method stub
 		return sql.selectList("order.orderList", userId);
 	}
+	
+	@Override
+	public OrderList orderListDetail(String orderNum) {
+		// TODO Auto-generated method stub
+		return sql.selectOne("order.orderListDetail", orderNum);
+	}
 }
