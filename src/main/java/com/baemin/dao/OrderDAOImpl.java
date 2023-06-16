@@ -12,6 +12,7 @@ import com.baemin.dto.Cart;
 import com.baemin.dto.OrderDetail;
 import com.baemin.dto.OrderInfo;
 import com.baemin.dto.OrderList;
+import com.baemin.util.Page;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO {
@@ -54,9 +55,9 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 	
 	@Override
-	public List<OrderList> orderList(long userId) {
+	public List<OrderList> orderList(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return sql.selectList("order.orderList", userId);
+		return sql.selectList("order.orderList", map);
 	}
 	
 	@Override

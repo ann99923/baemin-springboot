@@ -8,6 +8,7 @@ import com.baemin.dto.CartList;
 import com.baemin.dto.OrderInfo;
 import com.baemin.dto.OrderList;
 import com.baemin.login.LoginService;
+import com.baemin.util.Page;
 
 public interface OrderService {
 	
@@ -17,8 +18,8 @@ public interface OrderService {
 	// 주문
 	public String order(CartList cart, OrderInfo info, LoginService user, HttpSession session);
 	
-	// 주문 목록
-	List<OrderList> orderList(long userId);
+	// 주문 목록(페이징 추가)
+	List<OrderList> orderList(long userId, Page p);
 	
 	// 주문목록 상세보기
 	OrderList orderListDetail(String orderNum);

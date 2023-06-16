@@ -1,11 +1,13 @@
 package com.baemin.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.baemin.dto.Cart;
 import com.baemin.dto.OrderDetail;
 import com.baemin.dto.OrderInfo;
 import com.baemin.dto.OrderList;
+import com.baemin.util.Page;
 
 public interface OrderDAO {
 	
@@ -25,7 +27,7 @@ public interface OrderDAO {
 	void orderDetail(OrderDetail[] detail, long userId);
 	
 	// 주문 목록
-	List<OrderList> orderList(long userId);
+	List<OrderList> orderList(Map<String, Object> map);
 	
 	// 주문목록 상세보기 페이지
 	OrderList orderListDetail(String orderNum);
