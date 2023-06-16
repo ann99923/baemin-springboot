@@ -3,10 +3,61 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="store">
-
+ 
 	<select id="storeList" resultType="Store">
-		select * from bm_store
+		with r_count as
+		(
+			select store_id, round(avg(score), 1) score,
+					count(review_content) review_count, count(boss_comment) boss_comment_count
+			from bm_review
+			group by store_id
+		),
+		store as
+		(
+			select s.*, t.*,
+					case when mod(24 - s.opening_time + s.closing_time, 24) != 0
+					then mod(24 - s.opening_time + s.closing_time, 24) else 24 end bs_time
+			from bm_store s
+			left join r_count t
+			on s.id = t.store_id
+			where category = #{category}
+			and store_address1 like '${storeAddress1}%'
+			
+		<if test="sort == '배달 빠른 순'">
+			order by delevery_time
+		</if>
+		<if test="sort == '배달팁 낮은 순'">
+			order by delevery_tip
+		</if>
+		<if test="sort == '별점 높은 순'">
+			order by score
+		</if>
+		<if test="sort == '리뷰 많은 순'">
+			order by review_count
+		</if>
+		<if test="sort == '최소 주문 금액 순'">
+			order by min_delevery
+		</if>
+		)
+		
+		select * from
+		(
+			select rownum rn, result.*
+			from
+			(
+				select c.*, 'true' is_open
+				from store c
+				where to_char(systimestamp, 'HH24') between opening_time and opening_time + bs_time
+				union all
+				
+				select c.*, 'false' is_open
+				from store c
+				where to_char(systimestamp, 'HH24') not between opening_time and opening_time + bs_time
+			) result
+		)		
+		where rn between #{firstList} and ${lastList}	
 	</select>
+	
 
 	<select id="storeDetail" resultType="Store">
 		select result.*, case when to_char(sysdate, 'HH24') between opening_time and opening_time + bs_time
@@ -19,7 +70,7 @@
 			(
 				select * from
 				(
-					select round(avg(score), 1) score, count(review_content) review_content,
+					select round(avg(score), 1) score, count(review_content) review_count,
 							count(boss_comment) boss_comment_count, count(case when score=1 then 1 end) score1,
 							count(case when score=2 then 1 end) score2, count(case when score=3 then 1 end) score3,
 							count(case when score=4 then 1 end) score4, count(case when score=5 then 1 end) score5

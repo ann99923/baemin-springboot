@@ -21,5 +21,8 @@ public interface StoreService {
 	
 	// 리뷰수정
 	void reviewModify(Review review);
+	
+	// 매장목록
+	List<Store> storeList(int category, int address, String sort, int page);
 
 }

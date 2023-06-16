@@ -4,7 +4,7 @@
 <%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
 <li>
-		<%-- <a href="${store_admin }/detail/${storeList.id }"> --%>
+		 <a href="${store_admin }/detail/${storeList.id }"></a>
 		
 		<div class="img_box">
 			<a href="${store_admin }/detail/${storeList.id }"><img src="${storeList.storeImg }" alt="이미지"></a>
@@ -16,7 +16,7 @@
 			
 			<a href="${store_admin }/detail/${storeList.id }">
 				<span>
-				<%-- 
+
 					<span>평점 ${storeList.score }</span>
 					
 					<span class="score_box">
@@ -29,15 +29,15 @@
 							</c:if>
 						</c:forEach>
 					</span>
-				--%>
+
 				</span>
 				
 			<span>
-			<%-- 
+ 
 				<span>리뷰 ${storeList.reviewCount }</span>
 				<span>사장님 댓글 ${storeList.bossCommentCount }</span>
 			</span>
-			--%>
+
 			<span>
 				<span>최소주문금액 <fm:formatNumber value="${storeList.minDelevery }" pattern="###,###" />원</span>
 				<span>배달팁 <fm:formatNumber value="${storeList.deleveryTip }" pattern="###,###" />원</span>
@@ -46,11 +46,11 @@
 			</a>
 		</div>
 		
-		<%-- 
+
 	<c:if test="${!storeList.isOpen}">
 		<div class="is_open">
 			<a href="/store/detail/${storeList.id }">지금은 준비중입니다</a>
 		</div>
 	</c:if>
-	--%>
+
 </li>

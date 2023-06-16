@@ -13,6 +13,7 @@ import com.baemin.dto.FoodOption;
 import com.baemin.dto.Review;
 import com.baemin.dto.Store;
 import com.baemin.dto.StoreDetail;
+import com.baemin.util.Page;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -23,11 +24,8 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	public List<Store> storeList(int category, int address) {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<>();
-		map.put("category", category);
-		map.put("address1", address);
 		
-		return storeDAO.storeList(map);
+		return storeList(category, address, "주문접소 대기 중", 1);
 	}
 	
 	@Override
@@ -60,6 +58,22 @@ public class StoreServiceImpl implements StoreService {
 	public void reviewModify(Review review) {
 		// TODO Auto-generated method stub
 		storeDAO.reviewModify(review);
+	}
+	
+	@Override
+	public List<Store> storeList(int category, int address1, String sort, int page) {
+		// TODO Auto-generated method stub
+		Page p = new Page(page, 8);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		map.put("address1", address1);
+		map.put("firstList", p.getFirstList());
+		System.out.println(p.getFirstList());
+		map.put("lastList", p.getLastList());
+		map.put("sort", sort);
+		System.out.println("페이지 시작 = " + p.getFirstList() + " 페이지 끝 = " + p.getLastList());
+		
+		return storeDAO.storeList(map);
 	}
 
 }

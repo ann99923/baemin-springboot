@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,7 +44,7 @@ public class StoreController {
 	public String storeDetail(@PathVariable long id, Model model) {
 		StoreDetail storeDetail = storeService.storeDetail(id);
 		model.addAttribute("store", storeDetail);
-		
+		System.out.println(storeDetail.getStoreInfo());
 		return "store/detail";
 	}
 	
@@ -87,7 +89,14 @@ public class StoreController {
 		System.out.println(review);
 		storeService.reviewModify(review);
 		
-		return "redirect:/orderList";
-		
+		return "redirect:/orderList";	
+	}
+	
+	// 다음 페이지 불러오기
+	@ResponseBody
+	@GetMapping("/store/storeList")
+	public ResponseEntity<List<Store>> sortStore(int category, int address1, String sort, int page, Model model) {
+		List<Store> storeList = storeService.storeList(category, address1 / 100, sort, page);
+		return new ResponseEntity<List<Store>>(storeList, HttpStatus.OK);
 	}
 }

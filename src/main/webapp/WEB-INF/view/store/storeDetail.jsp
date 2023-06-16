@@ -4,7 +4,6 @@
 <%@ taglib prefix="fm" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <div id="wrap">
 	<nav>
-	${store.storeInfo }
 		<c:set var="info" value="${store.storeInfo }" />
 		<h1 id="store_name" data-store_name="${info.storeName }">${info.storeName }</h1>
 		<div id="is_open" data-is_open="${store.storeInfo.isOpen }"></div>
@@ -29,7 +28,7 @@
 			<div>
 				<span class="store_review_count"
 					data-review_count="${info.reviewCount }"> 리뷰
-					${info.reviewCount }</span> <span>사장님 댓글 ${info.bossCommentCount }</span>
+					${info.reviewCount }개</span> <span>사장님 댓글 ${info.bossCommentCount }</span>
 			</div>
 
 			<div id="min_delevery" data-min_delevery="${info.minDelevery }">
