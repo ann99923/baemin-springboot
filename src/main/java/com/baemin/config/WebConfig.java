@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.baemin.interceptor.AddressInterceptor;
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 
 
@@ -36,5 +38,16 @@ public class WebConfig implements WebMvcConfigurer {
         return registrationBean;
     }
 
+    @Bean
+    public AddressInterceptor addressInterceptor() {
+    	return new AddressInterceptor();
+    }
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+    	// TODO Auto-generated method stub
+    	registry.addInterceptor(addressInterceptor())
+    			.addPathPatterns("/*");
+    }
 
 }
