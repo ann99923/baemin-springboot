@@ -1,5 +1,7 @@
 # baemin-springboot
 springboot 수업 배민 사이트 구현
+- https://sumin2.tistory.com/10
+- https://velog.io/@jiandme/SpringBoot-%EB%B0%B0%EB%8B%AC%EC%9D%98%EB%AF%BC%EC%A1%B1-1-%ED%99%98%EA%B2%BD%EC%84%B8%ED%8C%85
 
 06/12<br>
 - springboot 프로젝트 생성
