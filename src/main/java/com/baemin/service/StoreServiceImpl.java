@@ -29,9 +29,9 @@ public class StoreServiceImpl implements StoreService {
 	}
 	
 	@Override
-	public StoreDetail storeDetail(long storeId) {
+	public StoreDetail storeDetail(long storeId, long userId) {
 		// TODO Auto-generated method stub
-		Store storeInfo = storeDAO.storeDetail(storeId);
+		Store storeInfo = storeDAO.storeDetail(storeId, userId);
 		List<Food> foodList = storeDAO.foodList(storeId);
 		List<Review> reviewList = storeDAO.reviewList(storeId);
 		
@@ -74,6 +74,20 @@ public class StoreServiceImpl implements StoreService {
 		System.out.println("페이지 시작 = " + p.getFirstList() + " 페이지 끝 = " + p.getLastList());
 		
 		return storeDAO.storeList(map);
+	}
+	
+	@Override
+	public void likes(long storeId, String likes, long userId) {
+		// TODO Auto-generated method stub
+		Map<String, Long> map = new HashMap<String, Long>();
+		map.put("storeId", storeId);
+		map.put("userId", userId);
+		
+		if(likes.equals("on")) {
+			storeDAO.addLikes(map);
+		}else {
+			storeDAO.deleteLikes(map);
+		}
 	}
 
 }

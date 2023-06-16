@@ -60,8 +60,8 @@
 	
 
 	<select id="storeDetail" resultType="Store">
-		select result.*, case when to_char(sysdate, 'HH24') between opening_time and opening_time + bs_time
-							then 'true' else 'false' end is_open
+		select result.*, l.is_likes, case when to_char(sysdate, 'HH24') between opening_time and opening_time + bs_time
+										then 'true' else 'false' end is_open
 		from
 		(
 			select s.*, c.*, case when mod(24 - s.opening_time + s.closing_time, 24) != 0
@@ -75,7 +75,12 @@
 							count(case when score=2 then 1 end) score2, count(case when score=3 then 1 end) score3,
 							count(case when score=4 then 1 end) score4, count(case when score=5 then 1 end) score5
 					from bm_review
-					where store_id=#{id}
+					where store_id=#{storeId}
+				),
+				(
+					select count(*) likes_count
+					from bm_likes
+					where store_id=#{storeId}
 				),
 				(
 					select sum(order_count) order_count
@@ -83,16 +88,28 @@
 					(
 						select count(*) order_count
 						from bm_order_user
-						where store_id=#{id}
+						where store_id=#{storeId}
 						union all
 						select count(*) order_count
 						from bm_order_non_user
-						where store_id=#{id}
+						where store_id=#{storeId}
 					)
 				) 
 			) c
-			where id = #{id}
+			where id = #{storeId}
 		) result
+		left join
+		(
+			select store_id, 1 is_likes
+			from bm_likes
+			where exists
+			(
+				select 1
+				from bm_likes
+				where user_id=#{userId} and store_id=#{storeId}
+			)
+		) l
+		on result.id = l.store_id
 	</select>
 	
 	<select id="foodList" resultType="Food">
@@ -129,4 +146,15 @@
 								</if>
 		where order_num = ${orderNum}
 	</update>
+	
+	<insert id="addLikes">
+		insert into bm_likes(user_id, store_id)
+		values(#{userId},#{storeId})
+	</insert>
+	
+	<delete id="deleteLikes">
+		delect bm_likes
+		where user_id = #{userId}
+		and store_id = #{storeId}
+	</delete>
 </mapper>

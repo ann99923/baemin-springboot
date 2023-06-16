@@ -21,8 +21,19 @@
 						</c:choose>
 					</c:forEach> <span class="store_score" data-score="${info.score }">${info.score }</span>
 
-				</span><br> <span><i class="fas fa-heart"></i> 찜 </span> <span
-					class="likes_count" data-count=0>0</span>
+				</span><br>
+				
+				<c:choose>
+					<c:when test="${info.isLikes == 1 }">
+						<span><i class="fas fa-heart"></i> 찜 </span>
+					</c:when>
+
+					<c:otherwise>
+						<span><i class="far fa-heart"></i> 찜 </span>
+					</c:otherwise>
+				</c:choose>
+
+				<span class="likes_count" data-count=${info.likesCount }>${info.likesCount }</span>
 
 			</div>
 			<div>
@@ -116,9 +127,9 @@
 							<fm:formatNumber value="${foodList.foodPrice }" pattern="###,###" />
 							원 <input type="hidden" value="${foodList.storeId }"
 								name="storeId"> <input type="hidden"
-								value="${foodList.id }" name="foodId" class="food_id">
-							<input type="hidden" value="${foodList.foodName }"
-								name="foodName" class="food_name"> <input type="hidden"
+								value="${foodList.id }" name="foodId" class="food_id"> <input
+								type="hidden" value="${foodList.foodName }" name="foodName"
+								class="food_name"> <input type="hidden"
 								value="${foodList.foodPrice }" name="foodPrice"
 								class="food_price"> <input type="hidden"
 								value="${foodList.foodDec }" name="foodDec" class="food_dec">
@@ -203,10 +214,10 @@
 					</div>
 
 					<div class="info_detail">
-	
-            <div>${info.orderCount }</div>
-            <div>${info.reviewCount }</div>
-            <div>${info.likesCount }</div> 
+
+						<div>${info.orderCount }</div>
+						<div>${info.reviewCount }</div>
+						<div>${info.likesCount }</div>
 
 					</div>
 				</div>

@@ -1,7 +1,11 @@
 package com.baemin.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +45,13 @@ public class StoreController {
 	}
 	
 	@GetMapping("/store/detail/{id}")
-	public String storeDetail(@PathVariable long id, Model model) {
-		StoreDetail storeDetail = storeService.storeDetail(id);
+	public String storeDetail(@PathVariable long id, @AuthenticationPrincipal LoginService user, Model model) {
+		long userId = 0;
+		if(user != null) {
+			userId = user.getUser().getId();
+		}
+		
+		StoreDetail storeDetail = storeService.storeDetail(id, userId);
 		model.addAttribute("store", storeDetail);
 		System.out.println(storeDetail.getStoreInfo());
 		return "store/detail";
@@ -98,5 +107,23 @@ public class StoreController {
 	public ResponseEntity<List<Store>> sortStore(int category, int address1, String sort, int page, Model model) {
 		List<Store> storeList = storeService.storeList(category, address1 / 100, sort, page);
 		return new ResponseEntity<List<Store>>(storeList, HttpStatus.OK);
+	}
+	
+	// 찜하기
+	@ResponseBody
+	@PostMapping("/store/likes")
+	public long likes(long id, String likes, @AuthenticationPrincipal LoginService user,
+						HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+		System.out.println("찜하기id= " + id + " " + likes);
+		long userId = 0;
+		if(user == null) {
+			
+		}else {
+			System.out.println("찜하기 회원");
+			userId = user.getUser().getId();
+			storeService.likes(id,likes, userId);
+		}
+		
+		return userId;
 	}
 }

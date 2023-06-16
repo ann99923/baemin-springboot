@@ -11,7 +11,7 @@ public interface StoreService {
 	
 	List<Store> storeList(int category, int address);
 	
-	StoreDetail storeDetail(long id);
+	StoreDetail storeDetail(long id, long userId);
 	
 	// 해당 메뉴의 옵션 가져오기
 	List<FoodOption> foodOption(int foodId);
@@ -24,5 +24,8 @@ public interface StoreService {
 	
 	// 매장목록
 	List<Store> storeList(int category, int address, String sort, int page);
+
+	// 찜
+	void likes(long storeId, String likes, long userId);
 
 }

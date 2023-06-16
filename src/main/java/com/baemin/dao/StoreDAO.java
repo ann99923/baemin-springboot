@@ -12,7 +12,7 @@ public interface StoreDAO {
 	
 	List<Store> storeList(Map<String, Object> map);
 	
-	Store storeDetail(long storeId);
+	Store storeDetail(long storeId, long userId);
 	
 	List<Food> foodList(long storeId);
 	
@@ -23,5 +23,9 @@ public interface StoreDAO {
 	List<Review> reviewList(long id);
 	
 	void reviewModify(Review review);
+	
+	void addLikes(Map<String, Long> map);
+	
+	void deleteLikes(Map<String, Long> map);
 
 }
