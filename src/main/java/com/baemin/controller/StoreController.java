@@ -2,6 +2,7 @@ package com.baemin.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -122,8 +123,28 @@ public class StoreController {
 			System.out.println("찜하기 회원");
 			userId = user.getUser().getId();
 			storeService.likes(id,likes, userId);
+		}	
+		return userId;
+	}
+	
+	// 찜한 가게 목록
+	@GetMapping("/likes/store")
+	public String likes(Model model, @AuthenticationPrincipal LoginService user) {
+		long userId = 0;
+		List<Store> likesList = new ArrayList<Store>();
+		if(user == null) {
+			
+		}else {
+			userId = user.getUser().getId();
+			likesList = storeService.likesList(userId);
+		}
+		System.out.println("찜한 가게: ");
+		for(int i=0; i<likesList.size(); i++) {
+			System.out.println(likesList.get(i));
 		}
 		
-		return userId;
+		model.addAttribute("likesList", likesList);
+		
+		return "/store/likes";
 	}
 }

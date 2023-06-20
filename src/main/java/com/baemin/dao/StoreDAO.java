@@ -27,5 +27,7 @@ public interface StoreDAO {
 	void addLikes(Map<String, Long> map);
 	
 	void deleteLikes(Map<String, Long> map);
+	
+	List<Store> likesList(long userId);
 
 }

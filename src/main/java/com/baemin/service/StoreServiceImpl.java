@@ -90,4 +90,10 @@ public class StoreServiceImpl implements StoreService {
 		}
 	}
 
+	@Override
+	public List<Store> likesList(long userId) {
+		// TODO Auto-generated method stub
+		return storeDAO.likesList(userId);
+	}
+
 }

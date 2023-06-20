@@ -157,4 +157,46 @@
 		where user_id = #{userId}
 		and store_id = #{storeId}
 	</delete>
+	
+	<select id="likesList" resultType="Store">
+		with r_count as
+		(
+			select r.store_id, round(r.score, 1) score, r.review_count, r.boss_comment_count
+			from
+			(
+				select store_id, avg(score) score, count(review_content) review_count,
+						count(boss_comment) boss_comment_count
+				from bm_review group by store_id
+			) r
+		),
+		store as
+		(
+			select s.*, t.*, l.user_id, l.likes_date, 
+					case when mod(24 - s.opening_time + s.closing_time, 24) != 0
+					then mod(24 - s.opening_time + s.closing_time, 24) else 24 end bs_time
+			from bm_store s
+			left join r_count t
+			on s.id = t.store_id
+			left join bm_likes l
+			on s.id = l.store_id
+			where user_id = #{userId}
+		)
+		select * from
+		(
+			select c.*, 'true' is_open
+			from store c
+			where (to_char(systimestamp, 'HH24')
+					between opening_time
+					and opening_time + bs_time
+					)
+			union all
+			select c.*, 'false' is_open
+			from store c
+			where (to_char(systimestamp, 'HH24')
+					not between opening_time
+					and opening_time + bs_time
+					)
+		)
+		order by likes_date desc
+	</select>
 </mapper>

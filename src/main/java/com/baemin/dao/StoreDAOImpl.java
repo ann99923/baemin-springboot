@@ -75,5 +75,11 @@ public class StoreDAOImpl implements StoreDAO {
 		// TODO Auto-generated method stub
 		sql.delete("store.deleteLikes", map);
 	}
+	
+	@Override
+	public List<Store> likesList(long userId) {
+		// TODO Auto-generated method stub
+		return sql.selectList("store.likesList", userId);
+	}
 
 }
